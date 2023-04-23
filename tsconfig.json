@@ -14,6 +14,7 @@
     "paths": {
       "@lib": ["lib/src"],
       "@lib/*": ["lib/src/*"],
+      "@project-control/*": ["project-control/*"],
       "@globals": ["lib/src/utils/constants/globals.constant.ts"],
       "@models": ["models"],
       "@utils/*": ["utils/*"],
