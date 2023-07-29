@@ -50,6 +50,8 @@ const buildProjectDiscordEmbeds = (project: Project, meetingMinutes: File, meeti
 };
 
 export const actuallyFinishMeeting = (meetingEnd: Date, logger?: SheetLogger, teamEmails?: string[]) => {
+  logger?.log(DialogTitle.InProgress, `Execução iniciada para reunião de ${meetingEnd.asDateString()}`);
+
   const minutesDocFile = substituteVariablesInFile(DriveApp.getFileById(GS.doc.getId()), {
     [MeetingVariable.End]: meetingEnd.asTime(),
   });
@@ -61,7 +63,7 @@ export const actuallyFinishMeeting = (meetingEnd: Date, logger?: SheetLogger, te
 
   logger?.log(DialogTitle.InProgress, 'PDF da ata exportado.');
 
-  if (project) {
+  if (project && PCGS.ss) {
     if (teamEmails?.length) {
       sendEmail({
         subject: `[SA-SEL] Reunião "${project.name} (${project.edition})" - ${meetingEnd.asDateString()}`,
@@ -108,5 +110,4 @@ export const finishMeeting = () =>
       () => actuallyFinishMeeting(meetingEnd, logger, auth?.allowedEmails),
       logger,
     );
-    logger?.log(DialogTitle.InProgress, `Execução iniciada para reunião de ${meetingEnd.asDateString()}`);
   });
